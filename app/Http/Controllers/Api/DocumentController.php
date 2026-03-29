@@ -94,4 +94,26 @@ public function index(Request $request): JsonResponse
         // إرجاع 204 No Content وهو الكود القياسي لحذف الموارد (وما ينتظره الاختبار)
         return response()->json(null, 204);
     }
+
+
+
+    /**
+     * تنزيل المستند عبر الرابط الآمن.
+     */
+    public function download(Request $request, Document $document)
+    {
+        // 1. استخراج مسار الملف من قاعدة البيانات
+        $path = $document->file_path;
+
+        // 2. التحقق من وجود الملف فعلياً في وحدة التخزين
+        if (!Storage::disk('local')->exists($path)) {
+            return response()->json(['message' => 'الملف غير موجود على الخادم'], 404);
+        }
+
+        // 3. إرجاع الملف كاستجابة تنزيل (Download Response)
+        // نمرر المسار، ثم الاسم الذي سيظهر للمستخدم عند التحميل
+        $absolutePath = Storage::disk('local')->path($path);
+
+        return response()->download($absolutePath, $document->name);
+    }
 }
