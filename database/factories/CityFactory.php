@@ -1,0 +1,19 @@
+<?php
+
+namespace Database\Factories;
+
+use App\Models\City;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class CityFactory extends Factory
+{
+    protected $model = City::class;
+
+    public function definition(): array
+    {
+        return [
+            'Name' => $this->faker->city(),
+            'IsActive' => $this->faker->boolean(90), // 90% تكون نشطة
+        ];
+    }
+}
