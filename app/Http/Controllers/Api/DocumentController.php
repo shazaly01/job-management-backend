@@ -114,6 +114,6 @@ public function index(Request $request): JsonResponse
         // نمرر المسار، ثم الاسم الذي سيظهر للمستخدم عند التحميل
         $absolutePath = Storage::disk('local')->path($path);
 
-        return response()->download($absolutePath, $document->name);
+        return response()->file($absolutePath);
     }
 }
